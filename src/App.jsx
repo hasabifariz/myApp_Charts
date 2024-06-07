@@ -3,7 +3,7 @@ import SalesTable from "./components/SalesTable";
 import SalesChart from "./components/SalesChart";
 import DateFilter from "./components/DateFilter";
 import Grid from '@mui/material/Grid'
-import { getAll, getByProductName } from './services/product';
+import { getAll, getByProductName, getByRangeDate } from './services/product';
 
 
 function App() {
@@ -15,13 +15,24 @@ function App() {
 
   const [searchValue, setSearchValue] = useState(null)
   const [startDate, setStartDate] = useState(null);
+  console.log("🚀 ~ App ~ startDate:", startDate)
   const [endDate, setEndDate] = useState(null);
+  console.log("🚀 ~ App ~ endDate:", endDate)
 
   useEffect(() => {
 
-
     if (searchValue !== null && searchValue.length >= 1) {
       getByProductName(searchValue)
+        .then(response => {
+          setSales(response.data);
+          setLoading(false);
+        })
+        .catch(error => {
+          setError(error.message);
+          setLoading(false);
+        });
+    } else if (startDate !== null && endDate !== null) {
+      getByRangeDate(startDate, endDate)
         .then(response => {
           setSales(response.data);
           setLoading(false);
@@ -41,7 +52,7 @@ function App() {
           setLoading(false);
         });
     }
-  }, [searchValue]);
+  }, [searchValue, startDate, endDate]);
 
   const tableStructure = [
     { label: 'Product', key: 'product' },

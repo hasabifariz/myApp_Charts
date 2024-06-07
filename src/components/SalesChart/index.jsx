@@ -8,11 +8,8 @@ const index = (props) => {
     data
   } = props
   const [x, setX] = useState([])
-  console.log("🚀 ~ index ~ x:", x)
   const [yForLine, setYForLine] = useState([])
-  console.log("🚀 ~ index ~ yForLine:", yForLine)
   const [yForBar, setYForBar] = useState([])
-  console.log("🚀 ~ index ~ yForBar:", yForBar)
 
   useEffect(() => {
     if (data.length !== 0) {
