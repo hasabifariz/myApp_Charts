@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import SalesTable from "./components/SalesTable";
 import SalesChart from "./components/SalesChart";
 import DateFilter from "./components/DateFilter";
+import StatisticSummary from "./components/Statistic";
 import Grid from '@mui/material/Grid'
 import { getAll, getByProductName, getByRangeDate } from './services/product';
+import Typography from '@mui/material/Typography'
 
 
 function App() {
@@ -15,9 +17,20 @@ function App() {
 
   const [searchValue, setSearchValue] = useState(null)
   const [startDate, setStartDate] = useState(null);
-  console.log("🚀 ~ App ~ startDate:", startDate)
   const [endDate, setEndDate] = useState(null);
-  console.log("🚀 ~ App ~ endDate:", endDate)
+
+  const [totalPendapatan, setTotalPendapatan] = useState(0)
+  const [totalPenjualan, setTotalPenjualan] = useState(0)
+  const [terlaris, setTerlaris] = useState(null)
+
+  useEffect(() => {
+    if (sales.length !== 0) {
+      const objectWithHighestValue = sales.reduce((maxObject, currentObject) => {
+        return currentObject.sales > maxObject.sales ? currentObject : maxObject;
+      }, sales[0]);
+      setTerlaris(objectWithHighestValue)
+    }
+  }, [sales.length])
 
   useEffect(() => {
 
@@ -54,6 +67,20 @@ function App() {
     }
   }, [searchValue, startDate, endDate]);
 
+  useEffect(() => {
+    if (sales.length !== 0) {
+      let tempSales = 0, tempRevenue = 0, terlaris
+      sales.map((item) => {
+        tempSales += item.sales
+        tempRevenue += item.revenue
+      })
+      setTotalPenjualan(tempSales)
+      setTotalPendapatan(tempRevenue)
+    }
+
+  }, [sales.length])
+
+
   const tableStructure = [
     { label: 'Product', key: 'product' },
     { label: 'Sales', key: 'sales' },
@@ -73,14 +100,23 @@ function App() {
           />
         </div>
         <Grid container>
+
           <SalesChart data={sales} />
-          <Grid item sx={{ mt: 7 }}
+
+          <StatisticSummary
+            totalPenjualan={totalPenjualan}
+            totalPendapatan={totalPendapatan}
+            terlaris={terlaris}
+          />
+
+          <Grid item sx={{ mt: 1 }}
             xs={12}
             sm={12}
             md={12}
             lg={12}
             xl={12}
           >
+            <Typography variant="body1" color="initial">Table Sales Data</Typography>
             <SalesTable
               tableStructure={tableStructure}
               numbering

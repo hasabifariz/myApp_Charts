@@ -21,7 +21,7 @@ const index = (props) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ py: 5 }}>
         {searchBar && <SearchBar setSearchValue={setSearchValue} />}
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

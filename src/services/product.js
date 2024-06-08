@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:8000';
 
 const formatDate = (date) => {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
@@ -14,7 +14,7 @@ export const getAll = () => {
 };
 
 export const getByProductName = (productName) => {
-  return axios.get(`${API_URL}/sales?product=${productName}`);
+  return axios.get(`${API_URL}/sales?product_like=${productName}`);
 };
 
 export const getByRangeDate = (startDate, endDate) => {

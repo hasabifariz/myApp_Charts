@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import BarChart from "../BarChart";
 import LineChart from "../LineChart";
@@ -18,41 +18,45 @@ const index = (props) => {
         setYForLine(prevItems => [...prevItems, item.sales]);
         setYForBar(prevItems => [...prevItems, item.revenue]);
       })
-    } else {
+    }
+    return () => {
       setX([]);
       setYForLine([]);
       setYForBar([]);
-    }
+    };
   }, [data.length])
 
   return (
-    <Grid container>
-      <Grid item
-        xs={12}
-        sm={12}
-        md={12}
-        lg={6}
-        xl={6}
-      >
-        <LineChart
-          x={x}
-          y={yForLine}
-        />
-      </Grid>
-      <Grid item
-        xs={12}
-        sm={12}
-        md={12}
-        lg={6}
-        xl={6}
-      >
-        <BarChart
-          x={x}
-          y={yForBar}
-        />
-      </Grid>
+    <>
+      <Typography variant="body1" color="initial">Graph Chart</Typography>
+      <Grid container>
+        <Grid item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+        >
+          <LineChart
+            x={x}
+            y={yForLine}
+          />
+        </Grid>
+        <Grid item
+          xs={12}
+          sm={12}
+          md={12}
+          lg={6}
+          xl={6}
+        >
+          <BarChart
+            x={x}
+            y={yForBar}
+          />
+        </Grid>
 
-    </Grid >
+      </Grid >
+    </>
   )
 }
 
